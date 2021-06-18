@@ -1,0 +1,4565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head class="at-element-marker">
+  <title>Import archived backups</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
+  <meta http-equiv="language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Import archived backups" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://docs.netapp.com/us-en/snapcenter/protect-scsql/task_import_archived_backups.html" />
+	<meta property="og:description" content="You can import only those backups that were archived using SnapVault technology from SnapManager for Microsoft SQL Server to SnapCenter from the command-line..." />
+  <meta property="og:image" content="https://docs.netapp.com/us-en/snapcenter/images/logo-tophat-social.png" />
+  <meta property="og:image:alt" content="NetApp Logo" />
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="encoding" content="utf-8">
+  <meta http-equiv="nss-type" content="Product Documentation"/>
+  <meta http-equiv="nss-subtype" content="User Guide"/>
+  
+  <meta name="description" content="You can import only those backups that were archived using SnapVault technology from SnapManager for Microsoft SQL Server to SnapCenter from the command-line...">
+  <meta name="keywords" content=" SnapVault">
+  
+  
+
+  <!-- Icons -->
+  <link rel="icon" href="/us-en/snapcenter/images/favicon.ico" type="image/x-icon">
+
+  <!-- RSS Feed -->
+  
+
+  <!-- CSS Definitions: NetApp CSS should be defined after generic css -->
+
+  <!-- Elastic Search -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/searchkit/0.10.0/theme.css">
+
+  <!-- Controls AsciiDoctor Admonition Blocks -->
+  <link rel="stylesheet" type="text/css" href="/us-en/snapcenter/css/font-awesome.min.css">
+
+  <!-- Controls the shadow effect for search dropdown menu -->
+  <link rel="stylesheet" href="/us-en/snapcenter/css/boxshadowproperties.css">
+
+  <!-- NetApp CSS controls the technical content -->
+  <link rel="stylesheet" type="text/css" href="/us-en/snapcenter/css/netapp.css">
+
+  <!-- WWW CSS Content -->
+  <link rel="stylesheet" type="text/css" href="/us-en/snapcenter/css/www-luci-dotcom.min.css">
+  <link rel="stylesheet" type="text/css" href="/us-en/snapcenter/css/www-netapp-dotcom.css">
+  <link rel="stylesheet" href="/us-en/snapcenter/css/www-netapp-library-critical.min.css" media="all" >
+  <link rel="stylesheet" href="/us-en/snapcenter/css/www-netapp-library-non-critical.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="stylesheet" href="/us-en/snapcenter/css/www-netapp-library-global-header-footer.min.css">
+
+  <!-- NetApp IE Customizations -->
+  <link rel="stylesheet" href='/us-en/snapcenter/css/na-utility.css' type='text/css'>
+  <link rel="stylesheet" href='/us-en/snapcenter/css/na-sidebar.css' type='text/css'>
+  <link rel='stylesheet' href='/us-en/snapcenter/css/clouddocs.css' type='text/css'>
+  <link rel='stylesheet' href='/us-en/snapcenter/css/na-pagenav.css' type='text/css'>
+
+  
+
+  
+  <link rel='stylesheet' href='/us-en/snapcenter/css/na-feature.css' type='text/css'>
+  
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <!-- Used to import Promise for IE. Required for SearchKit -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+  
+    <script src='/us-en/snapcenter/js/na-search.js'></script>
+  
+
+  
+  <script src='/us-en/snapcenter/js/na-pagenav.js'></script>
+  
+
+  <link rel='stylesheet' href='/us-en/snapcenter/css/prism.css' type='text/css'>
+  <link rel='stylesheet' href='/us-en/snapcenter/css/prism-netapp.css' type='text/css'>
+
+
+  <script src='/us-en/snapcenter/js/na-utility.js'></script>
+  <script src='/us-en/snapcenter/js/clouddocs.js'></script>
+  <script>
+  if (document.location.hostname === "docs.netapp.com") {
+    var head = document.getElementsByTagName('head')[0];
+    var adobe = document.createElement("script");
+    adobe.type = "text/javascript";
+    adobe.src = "//assets.adobedtm.com/60287eadf1ee/c284da483c83/launch-e9ff3acac59f.min.js";
+    head.appendChild(adobe);
+  }
+  </script>
+  <script src='/us-en/snapcenter/js/jquery.navgoco.min.js'></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src='/us-en/snapcenter/js/toc.js'></script>
+  <script src='/us-en/snapcenter/js/customscripts.js'></script>
+
+  <script>
+      $(document).ready(function() {
+          
+          var collapseOnInit = true;
+          
+
+          var navSettings = {
+              "caretHtml": '',
+              "accordion": collapseOnInit,
+              "openClass": 'active', // open
+              "save": false, // leave false or nav highlighting doesn't work right
+              "cookie": {
+                  "name": 'navgoco',
+                  "expires": false,
+                  "path": '/'
+              },
+              "slide": {
+                  "duration": 400,
+                  "easing": 'swing'
+              }
+          };
+
+          // Initialize navgoco with default options
+          $("#mysidebar").navgoco(navSettings);
+          
+
+          $("#collapseAll").click(function(e) {
+              e.preventDefault();
+              $("#mysidebar").navgoco('toggle', false);
+          });
+
+          $("#expandAll").click(function(e) {
+              e.preventDefault();
+              $("#mysidebar").navgoco('toggle', true);
+          });
+
+      });
+
+  </script>
+  <script>
+      $(document).ready(function() {
+          $("#tg-sb-link").click(function() {
+              $("#tg-sb-sidebar").toggle();
+              $("#tg-sb-content").toggleClass('col-md-9');
+              $("#tg-sb-content").toggleClass('col-md-12');
+              $("#tg-sb-icon").toggleClass('fa-toggle-on');
+              $("#tg-sb-icon").toggleClass('fa-toggle-off');
+          });
+      });
+  </script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-81697994-3"></script>
+  <script>
+  if (document.location.hostname === "docs.netapp.com") {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-81697994-3');
+  }
+  </script>
+</head>
+
+
+  <body class role="document">
+    <div id="page" class="n-off-canvas-menu">
+      <div class="n-off-canvas-menu__menu"><!--TODO: Add offcanvas code --></div>
+      <div class="n-off-canvas-menu__content-wrap">
+        <header class="site-header" id="banner">
+  <!-- Start top_hat -->
+  <div class="n-top-hat">
+    <div class="n-container">
+      <div class="n-top-hat__cross-property-nav">
+        <ul class="n-top-hat__list">
+          <li class="n-top-hat__list-item">
+            <a href="https://www.netapp.com/products-a-z/" class="n-top-hat__link">Product and Solutions</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://www.netapp.com/support-and-training/netapp-university/" class="n-top-hat__link">Support and Training</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://cloud.netapp.com" class="n-top-hat__link">Cloud Central</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://community.netapp.com/" class="n-top-hat__link">Community</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://blog.netapp.com/" class="n-top-hat__link">Blog</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://customers.netapp.com/en/" class="n-top-hat__link">Customer Stories</a>
+          </li>
+          <li class="n-top-hat__list-item">
+            <a href="https://www.netapp.com/us/contact-us/index.aspx" target="_self" class="n-top-hat__link" data-ntap-ui="contact-us">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <div class="n-top-hat__utils">
+        <ul class="n-top-hat__list">
+          <li class="n-top-hat__list-item">
+            <a href="https://www.netapp.com/us/contact-us/index.aspx" target="_self" class="n-top-hat__link" data-ntap-ui="contact-us">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End top_hat -->
+
+  <!-- Start property bar -->
+  <style>
+    .n-property-navigation-bar__menus--desktop-experience .n-menu--mega__default-content__heading span {
+    color: #34B0FF;
+    }
+  </style>
+  <div class="n-property-bar " data-ntap-ui="sticky-nav">
+    <div class="n-property-bar__inner-wrap">
+      <div class="n-property-bar__menu-toggle">
+        <a href="#" class="n-property-bar__menu-toggle-link">
+          <span class="n-property-bar__menu-toggle-text">Menu</span>
+          <svg class="n-icon-bars n-property-bar__menu-toggle-icon" aria-labelledby="title">
+            <title>bars</title>
+            <use xlink:href="/us-en/snapcenter/common/svg/sprite.svg#bars"></use>
+          </svg>
+        </a>
+      </div>
+      <div class="n-property-bar__property-mark ">
+        <a href="https://www.netapp.com" class="n-property-bar__property-link">
+          <div class="n-property-bar__logo">
+            <svg class="n-icon-netapp-mark n-icon-netapp-mark n-property-bar__netapp-mark-icon" aria-labelledby="title">
+              <title>netapp-mark</title>
+              <use xlink:href="/us-en/snapcenter/common/svg/sprite.svg#netapp-mark"></use>
+            </svg>
+            <svg class="n-icon-netapp-logo n-property-bar__logo-svg" aria-labelledby="title">
+              <title>netapp-logo</title>
+              <use xlink:href="/us-en/snapcenter/common/svg/sprite.svg#netapp-logo"></use>
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="search-property-bar">
+        <div id="search-demo-container" class="searchbox n-property-bar__search">
+          <div id="react-search" data-type="widget" data-placeholder="Search Documentation" data-no-results-found="No results were found for {query}" data-did-you-mean="Search for {suggestion}." data-no-results-found-did-you-mean="No results found for {query}. Did you mean {suggestion}?" data-results-found="{hitCount} results found"  ></div>
+          <button class="n-property-bar__search-toggle-button" type="button">
+            <svg class="n-icon-search n-property-bar__search-toggle-button-icon" aria-labelledby="title">
+              <title>search</title>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#search"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="n-property-bar__toolbar"><!-- Start Language Selector --><!-- End Language Selector -->
+
+    <div class="n-property-bar__cta"></div>
+  </div>
+  <script>
+    $(function(){
+        var currentLocalization = $('html').attr('lang');
+
+        var localizationsDictionary = {
+            "en-CA" : "https://www.netapp.com/search/index.aspx?for_cr=canada&",
+            "en-IN" : "https://www.netapp.com/search/index.aspx?for_cr=india&",
+            "nl-NL" : "https://www.netapp.com/search/index.aspx?for_cr=netherlands&",
+            "ru-RU" : "https://www.netapp.com/search/index.aspx?for_cr=russia&",
+            "sv-SE" : "https://www.netapp.com/search/index.aspx?for_cr=sweden&",
+            "it-IT" : "https://www.netapp.com/search/index.aspx?for_cr=italy&",
+            "he-IL" : "https://www.netapp.com/search/index.aspx?for_cr=israel&",
+            "ko-KR" : "https://www.netapp.com/search/index.aspx?for_cr=korea&",
+            "zh-TW" : "https://www.netapp.com/search/index.aspx?for_cr=taiwan&",
+            "en-GB" : "https://www.netapp.com/search/index.aspx?for_cr=unitedkingdom&",
+            "en-SG" : "https://www.netapp.com/search/index.aspx?for_cr=asean&",
+            "en-AU" : "https://www.netapp.com/search/index.aspx?for_cr=australia&",
+            "pt-BR" : "https://www.netapp.com/search/index.aspx?for_cr=brasil&",
+            "de-CH" : "https://www.netapp.com/search/index.aspx?for_cr=switzerland&",
+            "es-MX" : "https://www.netapp.com/search/index.aspx?for_cr=mexico&"
+        };
+
+        if($('html').hasClass('ntap-whitelisted') && localizationsDictionary.hasOwnProperty(currentLocalization)) {
+            $('.n-property-bar__property-link').attr('href', '/');
+        }
+    });
+  </script>
+  <!-- End property bar -->
+</header>
+
+        <div class="ie-utility">
+  <div class="ie-menu">
+    <div class="n-breadcrumb">
+      <ul class="n-breadcrumb__list">
+        <li class="n-breadcrumb__list-item">
+          <a href="https://www.netapp.com">Home</a>
+        </li>
+        <li class="n-breadcrumb__list-item">
+          <a href="https://docs.netapp.com">Documentation</a>
+        </li>
+        
+
+        <li class="n-breadcrumb__list-item">
+          <a href="/us-en/snapcenter/">SnapCenter&nbsp;Software</a>
+        </li>
+        <li class="n-breadcrumb__list-item">
+          Import archived backups
+        </li>
+      </ul>
+    </div>
+
+    <div style="clear: both"></div><!-- Main needs to have height -->
+  </div>
+</div>
+
+
+        <main id="n-main-content" class="n-main-content">
+          <!-- Start Documentation Content -->
+<div class="ie-main">
+  <!-- Sidebar Column -->
+  
+  <div class="col-md-3" >
+      <div class="n-pdf-header">
+  <a id="toggleButtonPdf" class="n-pdf-button" type="button">PDFs<span>
+    </span>
+  </a>
+</div>
+<ul id="toggleContainerPdf" class="n-pdf-body" style="display:none;"><div class="n-pdf-section">
+      <span class="n-pdf-section-title">Site</span>
+    </div>
+    <li>
+      <a target="_blank" href="/us-en/snapcenter/pdfs/fullsite-sidebar/SnapCenter_Software_documentation.pdf" >
+        <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+        SnapCenter Software documentation
+      </a>
+    </li>
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Concepts.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Concepts
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_role_based_access_control__RBAC_.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter role-based access control (RBAC)
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prepare_for_installing_the_SnapCenter_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prepare for installing the SnapCenter Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_the_SnapCenter_Server_using_the_install_wizard.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install the SnapCenter Server using the install wizard
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Log_in_to_SnapCenter.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Log in to SnapCenter
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Configure_SnapCenter_Servers_for_High_Availability_using_F5.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Configure SnapCenter Servers for High Availability using F5
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Configure_role_based_access_control__RBAC_.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Configure role-based access control (RBAC)
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_SnapCenter_licenses.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add SnapCenter licenses
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Standard_controller_based_licenses.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Standard controller-based licenses
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Standard_capacity_based_licenses.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Standard capacity-based licenses
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Provision_storage_on_Windows_hosts.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Provision storage on Windows hosts
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Configure_LUN_storage.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Configure LUN storage
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Provision_storage_in_VMware_environments.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Provision storage in VMware environments
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Supported_VMware_guest_OS_platforms.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Supported VMware guest OS platforms
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Manage_FC_RDM_LUNs_in_a_Microsoft_cluster.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Manage FC RDM LUNs in a Microsoft cluster
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Configure_secured_MySQL_connections_with_SnapCenter_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Configure secured MySQL connections with SnapCenter Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_Microsoft_SQL_Server_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect Microsoft SQL Server databases
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Plug_in_for_Microsoft_SQL_Server_overview.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Plug-in for Microsoft SQL Server overview
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Define_a_backup_strategy_for_SQL_Server_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Define a backup strategy for SQL Server resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Define_a_restoration_strategy_for_SQL_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Define a restoration strategy for SQL Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_Microsoft_SQL_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for Microsoft SQL Server
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prerequisites_to_adding_hosts_and_installing_SnapCenter_Plug_in_for_Microsoft_SQL_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prerequisites to adding hosts and installing SnapCenter Plug-in for Microsoft SQL Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_the_SnapCenter_Plug_ins_Package_for_Windows.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install the SnapCenter Plug-ins Package for Windows
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Generate_CA_Certificate_CSR_file.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Generate CA Certificate CSR file
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Import_archived_backups_from_SnapManager_for_Microsoft_SQL_Server_to_SnapCenter.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Import archived backups from SnapManager for Microsoft SQL Server to SnapCenter
+          </a>
+        </li>
+        <span>
+          
+
+
+    <div class="n-pdf-section">
+  <span class="n-pdf-section-title">This page</span>
+</div>
+
+<li class="active">
+  <a target="_blank" href="/us-en/snapcenter/pdfs/pages/protect-scsql/task_import_archived_backups.pdf" >
+    <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+    Import archived backups
+  </a>
+</li>
+
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prepare_for_data_protection.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prepare for data protection
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_SQL_Server_database__or_instance__or_availability_group.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up SQL Server database, or instance, or availability group
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Monitor_backup_operations.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Monitor backup operations
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_SQL_Server_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore SQL Server resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Clone_SQL_Server_database_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Clone SQL Server database resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_SAP_HANA_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect SAP HANA databases
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Plug_in_for_SAP_HANA_Database_overview.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Plug-in for SAP HANA Database overview
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Define_a_backup_strategy_for_SAP_HANA_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Define a backup strategy for SAP HANA databases
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Define_a_restore_and_recovery_strategy_for_SAP_HANA_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Define a restore and recovery strategy for SAP HANA resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_SAP_HANA_Database.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for SAP HANA Database
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prerequisites_for_adding_hosts_and_installing_SnapCenter_Plug_in_for_SAP_HANA_Database.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prerequisites for adding hosts and installing SnapCenter Plug-in for SAP HANA Database
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_plug_in_packages_on_remote_hosts.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install plug-in packages on remote hosts
+          </a>
+        </li>
+        <span>
+          
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_SAP_HANA_Database_independently_on_the_Linux_host.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for SAP HANA Database independently on the Linux host
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Generate_CA_Certificate_CSR_file.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Generate CA Certificate CSR file
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prepare_for_data_protection.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prepare for data protection
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_SAP_HANA_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up SAP HANA resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Discover_the_databases_automatically.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Discover the databases automatically
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Monitor_backup_operations.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Monitor backup operations
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_SAP_HANA_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore SAP HANA databases
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Clone_SAP_HANA_resource_backups.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Clone SAP HANA resource backups
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_Oracle_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect Oracle databases
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Overview_of_SnapCenter_Plug_in_for_Oracle_Database.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Overview of SnapCenter Plug-in for Oracle Database
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_Oracle_Database.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for Oracle Database
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prerequisites_for_adding_hosts_and_installing_Plug_ins_Package_for_Linux_or_AIX.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prerequisites for adding hosts and installing Plug-ins Package for Linux or AIX
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_Plug_ins_Package_for_Linux_or_AIX.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install Plug-ins Package for Linux or AIX
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_Oracle_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up Oracle databases
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Monitor_Oracle_database_backup_operations.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Monitor Oracle database backup operations
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_and_recover_Oracle_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore and recover Oracle databases
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Clone_Oracle_database.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Clone Oracle database
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_Windows_file_systems.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect Windows file systems
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Plug_in_for_Microsoft_Windows_overview.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Plug-in for Microsoft Windows overview
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_Microsoft_Windows.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for Microsoft Windows
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Installation_requirements_for_SnapCenter_Plug_in_for_Microsoft_Windows.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Installation requirements for SnapCenter Plug-in for Microsoft Windows
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_SnapCenter_Plug_in_for_Microsoft_Windows.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install SnapCenter Plug-in for Microsoft Windows
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Generate_CA_Certificate_CSR_file.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Generate CA Certificate CSR file
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_Windows_file_systems.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up Windows file systems
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_Windows_file_system_backups.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore Windows file system backups
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Clone_from_a_Windows_file_system_backup.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Clone from a Windows file system backup
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_Microsoft_Exchange_Server_databases.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect Microsoft Exchange Server databases
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Plug_in_for_Microsoft_Exchange_Server_overview.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Plug-in for Microsoft Exchange Server overview
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Plug_in_for_Microsoft_Exchange_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Plug-in for Microsoft Exchange Server
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prerequisites_to_add_hosts_and_install_SnapCenter_Plug_in_for_Microsoft_Exchange_Server.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prerequisites to add hosts and install SnapCenter Plug-in for Microsoft Exchange Server
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_Plug_in_for_Exchange.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install Plug-in for Exchange
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Generate_CA_Certificate_CSR_file.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Generate CA Certificate CSR file
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_Exchange_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up Exchange resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_Exchange_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore Exchange resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Protect_Custom_applications.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Protect Custom applications
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/SnapCenter_Custom_Plug_ins_overview.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            SnapCenter Custom Plug-ins overview
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Define_a_backup_strategy.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Define a backup strategy
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Develop_a_plug_in_for_your_application.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Develop a plug-in for your application
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Install_SnapCenter_Custom_Plug_ins.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Install SnapCenter Custom Plug-ins
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prerequisites_for_adding_hosts_and_installing_SnapCenter_Custom_Plug_ins.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prerequisites for adding hosts and installing SnapCenter Custom Plug-ins
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Add_hosts_and_install_plug_in_packages_on_remote_hosts.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Add hosts and install plug-in packages on remote hosts
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Generate_CA_Certificate_CSR_file.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Generate CA Certificate CSR file
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Prepare_for_data_protection.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Prepare for data protection
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Back_up_custom_plug_in_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Back up custom plug-in resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Restore_custom_plug_in_resources.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Restore custom plug-in resources
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Clone_custom_plug_in_resource_backups.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Clone custom plug-in resource backups
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Manage_SnapCenter_Server_and_plug_ins.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Manage SnapCenter Server and plug-ins
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Overview_of_dashboard.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Overview of dashboard
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Upgrade_SnapCenter_Server_and_plug_ins.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Upgrade SnapCenter Server and plug-ins
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Uninstall_SnapCenter_Server_and_plug_ins.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Uninstall SnapCenter Server and plug-ins
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Uninstall_SnapCenter_plug_ins_and_plug_in_packages.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Uninstall SnapCenter plug-ins and plug-in packages
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+          <div class="n-pdf-section">
+            <span class="n-pdf-section-title">
+              Sections
+            </span>
+          </div>
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Automation_using_REST_APIs.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Automation using REST APIs
+          </a>
+        </li>
+        <span>
+          
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Overview_of_REST_APIs.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Overview of REST APIs
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+    
+      <span class="subfolders" style="display:none;">
+        
+        <li>
+          <a target="_blank" href="/us-en/snapcenter/pdfs/sidebar/Supported_REST_APIs.pdf" >
+            <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>
+            Supported REST APIs
+          </a>
+        </li>
+        <span>
+          
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+
+
+          
+        </span>
+      </span>
+    
+
+  
+
+
+
+
+</ul>
+
+<script>
+  $("#toggleContainerPdf li.active").parents('li').toggle('display');
+  $("#toggleContainerPdf li.active").parents('span.subfolders').toggle('display');
+  $("#toggleButtonPdf").click(function () {
+    $("#toggleContainerPdf").toggle('display');
+  });
+</script><ul id="mysidebar" class="nav"><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/index.html">
+        SnapCenter Software documentation
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/reference_release_notes.html">
+        Release notes
+      </a></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Concepts</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/concept_snapcenter_overview.html">
+        SnapCenter overview
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/reference_data_security.html">
+        Security features
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/concept/concept_snapcenter_role_based_access_control_rbac.html">
+        <div class="na-navbar-padding"> SnapCenter role-based access control (RBAC)</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/concept_types_of_role_based_access_control_in_snapcenter.html">
+        Types of RBAC
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/reference_role_based_access_control_permissions_and_roles.html">
+        RBAC permissions and roles
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/reference_pre_defined_snapcenter_roles_and_permissions.html">
+        Pre-defined SnapCenter roles and permissions
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/concept_resources_resource_groups_and_policies.html">
+        Resources, resource groups, and policies
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/concept_prescripts_and_postscripts.html">
+        Prescripts and postscripts
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/concept/concept_snapcenter_rest_apis.html">
+        SnapCenter Automation using REST APIs
+      </a></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Install SnapCenter Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/install_workflow.html">
+        Install Workflow
+      </a></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Prepare for installing the SnapCenter Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_domain_and_workgroup_requirements.html">
+        Domain and workgroup requirements
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_space_and_sizing_requirements.html">
+        Space and sizing requirements
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_san_host_requirements.html">
+        SAN host requirements
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_supported_storage_systems_and_applications.html">
+        Supported storage systems and applications
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_supported_browsers.html">
+        Supported browsers
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_connection_and_port_requirements.html">
+        Connection and port requirements
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_snapcenter_licenses.html">
+        SnapCenter licenses
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_authentication_methods_for_your_credentials.html">
+        Authentication methods for your credentials
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_svm_connections_and_credentials.html">
+        Storage Virtual Machine connections and credentials
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/task_install_the_snapcenter_server_using_the_install_wizard.html">
+        <div class="na-navbar-padding"> Install the SnapCenter Server using the install wizard</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/install/task_log_in_to_snapcenter.html">
+        <div class="na-navbar-padding"> Log in to SnapCenter</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_modify_the_snapcenter_default_log_out_period.html">
+        Modify the SnapCenter default GUI session timeout
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_secure_the_snapcenter_web_server_by_disabling_ssl_3_0.html">
+        Secure the SnapCenter web server by disabling SSL 3.0
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_generate_CA_certificate_CSR_file.html">
+        Generate CA Certificate CSR file
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_import_CA_certificates.html">
+        Import CA Certificates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_configure_CA_certificate_with_snapcenter_site.html">
+        Configure CA certificate with SnapCenter site
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_enable_ca_certificates_for_snapcenter.html">
+        Enable CA Certificates for SnapCenter Server
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_register_untrusted_active_directory_domains.html">
+        Register untrusted Active Directory domains
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_configure_snapcenter_servers_for_high_availabiity_using_f5.html">
+        <div class="na-navbar-padding"> Configure SnapCenter Servers for High Availability using F5</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_network_load_balanacing_and_application_request_routing_requirements.html">
+        Configure Microsoft Network Load Balancer manually
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_switch_from_nlb_to_f5_for_high_availability.html">
+        Switch from NLB to F5 for high availability
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_high_availability_for_snapcenter_mysql_repository.html">
+        High availability for the SnapCenter MySQL repository
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_export_snapcenter_certificates.html">
+        Export SnapCenter certificates
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_configure_role_based_access_control_rbac.html">
+        <div class="na-navbar-padding"> Configure role-based access control (RBAC)</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_add_a_user_or_group_and_assign_role_and_assets.html">
+        Add a user or group and assign role and assets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_create_a_role.html">
+        Create a role
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_add_an_rbac_role_using_security_login_commands.html">
+        Add an ONTAP RBAC role using security login commands
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_create_an_ontap_cluster_role_with_minimum_privileges.html">
+        Create an ONTAP cluster role with minimum privileges
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_configure_iis_application_pools_to_enable_active_directory_read_permissions.html">
+        Configure IIS Application Pools to enable Active Directory read permissions
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_add_storage_systems.html">
+        Add storage systems
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/install/task_add_snapcenter_licenses.html">
+        <div class="na-navbar-padding"> Add SnapCenter licenses</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/install/concept_snapcenter_standard_controller_based_licenses.html">
+        <div class="na-navbar-padding"> SnapCenter Standard controller-based licenses</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_verify_if_the_snapmanager_suite_storage_controller_license_is_installed.html">
+        Verify if the SnapManager Suite storage controller license is installed
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_view_the_licenses_installed_on_the_controller.html">
+        View the licenses installed on the controller
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_retrieve_the_controller_serial_number.html">
+        Retrieve the controller serial number
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_retrieve_the_snapcenter_controller_based_license_serial_number.html">
+        Retrieve SnapCenter controller-based license serial number
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_add_a_snapcenter_controller_based_license.html">
+        Add a SnapCenter Standard controller-based license
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_remove_the_trial_license.html">
+        Remove the trial license
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_snapcenter_standard_capacity_based_licenses.html">
+        <div class="na-navbar-padding"> SnapCenter Standard capacity-based licenses</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_how_snapcenter_calculates_capacity_usage.html">
+        How SnapCenter calculates capacity usage
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_calculate_capacity_requirements_for_a_snapcenter_capacity_based_license.html">
+        Calculate capacity requirements for a SnapCenter capacity-based license
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_retrieve_snapcenter_capacity_based_license_serial_number.html">
+        Retrieve SnapCenter capacity-based license serial number
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_generate_a_netapp_license_file.html">
+        Generate a NetApp license file
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_add_snapcenter_capacity_based_licenses.html">
+        Add SnapCenter capacity-based licenses
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_provision_storage_on_windows_hosts.html">
+        <div class="na-navbar-padding"> Provision storage on Windows hosts</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/install/concept_configure_lun_storage.html">
+        <div class="na-navbar-padding"> Configure LUN storage</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_establish_an_iscsi_session.html">
+        Establish an iSCSI session
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_disconnect_an_iscsi_session.html">
+        Disconnect an iSCSI session
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_create_and_manage_igroups.html">
+        Create and manage igroups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_create_and_manage_disks.html">
+        Create and manage disks
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_create_and_manage_smb_shares.html">
+        Create and manage SMB shares
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_reclaim_space_on_the_storage_system.html">
+        Reclaim space on the storage system
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_provision_storage_using_powershell_cmdlets.html">
+        Provision storage using PowerShell cmdlets
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_provision_storage_in_vmware_environments.html">
+        <div class="na-navbar-padding"> Provision storage in VMware environments</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/install/concept_supported_vmware_guest_os_platforms.html">
+        <div class="na-navbar-padding"> Supported VMware guest OS platforms</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_vmware_esxi_server_related_limitations.html">
+        VMware ESXi server-related limitations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_minimum_vcenter_privileges_required_for_snapcenter_rdm_operations.html">
+        Minimum vCenter privileges required for SnapCenter RDM operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_manage_fc_rdm_luns_in_a_microsoft_cluster.html">
+        <div class="na-navbar-padding"> Manage FC RDM LUNs in a Microsoft cluster</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_requirements_for_using_fc_rdm_luns_in_a_microsoft_cluster.html">
+        Requirements for using FC RDM LUNs in a Microsoft cluster
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/concept_microsoft_cluster_support_limitations_using_fc_rdm_luns.html">
+        Microsoft cluster support limitations when using FC/iSCSI RDM LUNs
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_create_a_shared_fc_rdm_lun.html">
+        Create a shared FC RDM LUN
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/install/concept_configure_secured_mysql_connections_with_snapcenter_server.html">
+        <div class="na-navbar-padding"> Configure secured MySQL connections with SnapCenter Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_configure_secured_mysql_connections_for_standalone_snapcenter_server.html">
+        Configure secured MySQL connections for standalone SnapCenter Server configurations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/task_configure_secured_mysql_connections_for_network_load_balancing_nlb.html">
+        Configure secured MySQL connections for HA configurations
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/install/reference_features_enabled_on_your_windows_host_during_installation.html">
+        Features enabled on your Windows host during installation
+      </a></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect Microsoft SQL Server databases</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/concept_snapcenter_plug_in_for_microsoft_sql_server_overview.html">
+        <div class="na-navbar-padding"> SnapCenter Plug-in for Microsoft SQL Server overview</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_what_you_can_do_with_the_snapcenter_plug_in_for_microsoft_sql_server.html">
+        What you can do with the SnapCenter Plug-in for Microsoft SQL Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_snapcenter_plug_in_for_microsoft_sql_server_features.html">
+        SnapCenter Plug-in for Microsoft SQL Server features
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_support_for_asymmetric_lun_mapping_alm_in_windows_clusters.html">
+        Support for Asymmetric LUN Mapping in Windows clusters
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_storage_types_supported_by_snapcenter_plug_ins_for_microsoft_windows_and_for_microsoft_sql_server.html">
+        Storage types supported by SnapCenter Plug-ins for Microsoft Windows and for Microsoft SQL Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_storage_layout_recommendations_for_snapcenter_plug_in_for_microsoft_sql_server.html">
+        Storage layout recommendations for SnapCenter Plug-in for Microsoft SQL Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_minimum_ontap_privileges_required_for_sql_plug_in.html">
+        Minimum ONTAP privileges required for SQL plug-in
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_plugin_for_sql.html">
+        Prepare storage systems for SnapMirror and SnapVault replication
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/task_define_a_backup_strategy_for_sql_server_resources.html">
+        <div class="na-navbar-padding"> Define a backup strategy for SQL Server resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_type_of_backups_supported.html">
+        Type of backups supported
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_backup_schedules_for_plugin_for_sql.html">
+        Backup schedules for database plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_number_of_backup_jobs_needed_for_databases.html">
+        Number of backup jobs needed for databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_backup_naming_conventions_for_plugin_for_sql.html">
+        Backup naming conventions
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_backup_retention_options_for_plugin_for_sql.html">
+        Backup retention options
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_how_long_to_retain_transaction_log_backups_on_the_source_storage_system.html">
+        How long to retain transaction log backups on the source storage system
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_multiple_databases_on_the_same_volume.html">
+        Multiple databases on the same volume
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_backup_copy_verification_using_the_primary_or_secondary_storage_volume_for_plugin_for_sql.html">
+        Backup copy verification using the primary or secondary storage volume
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_when_to_schedule_verification_jobs.html">
+        When to schedule verification jobs
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/task_define_a_restoration_strategy_for_sql_server.html">
+        <div class="na-navbar-padding"> Define a restoration strategy for SQL Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_sources_and_destinations_for_a_restore_operation.html">
+        Sources and destinations for a restore operation
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_sql_server_recovery_models_snapcenter_plug_in_for_microsoft_sql_server.html">
+        SQL Server recovery models supported by SnapCenter
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_types_of_restore_operations.html">
+        Types of restore operations
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_define_a_clone_strategy_for_sql_server.html">
+        Define a cloning strategy for SQL Server
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/quick_start_to_install_snapcenter_plug-in_for_sql_server.html">
+        Quick start to install SnapCenter Plug-in for Microsoft SQL Server
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/task_install_snapcenter_plug_in_for_microsoft_sql_server_database.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for Microsoft SQL Server</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/reference_prerequisites_to_adding_hosts_and_installing_snapcenter_plug_in_for_microsoft_sql_server.html">
+        <div class="na-navbar-padding"> Prerequisites to adding hosts and installing SnapCenter Plug-in for Microsoft SQL Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/reference_host_requirements_to_install_snapcenter_plug_in_package_for_windows_sql.html">
+        Host requirements to install SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_set_up_credentials_for_snapcenter_plug_ins_package_for_windows.html">
+        Set up credentials for the SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_configure_credentials_for_an_individual_sql_server_resource.html">
+        Configure credentials for an individual SQL Server resource
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_configure_gMSA_on_windows_server_2012_or_later.html">
+        Configure gMSA on Windows Server 2012 or later
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/task_add_hosts_and_install_snapcenter_plug_ins_package_for_windows.html">
+        <div class="na-navbar-padding"> Add hosts and install the SnapCenter Plug-ins Package for Windows</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_install_snapcenter_plug_in_package_for_windows_on_multiple_remote_hosts_using_cmdlets_scsql.html">
+        Install SnapCenter Plug-in for Microsoft Windows on multiple remote hosts by using cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_install_the_snapcenter_plug_in_for_sql_server_silently.html">
+        Install the SnapCenter Plug-in for Microsoft SQL Server silently from the command line
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_monitor_the_status_of_installing_plugin_for_sql.html">
+        Monitor the status of installing Plug-in for SQL Server
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/reference_generate_CA_certificate_CSR_file.html">
+        <div class="na-navbar-padding"> Generate CA Certificate CSR file</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_import_CA_certificates.html">
+        Import CA certificate
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/concept_import_archived_backups_from_snapmanager_for_sql_to_snapcenter.html">
+        <div class="na-navbar-padding"> Import archived backups from SnapManager for Microsoft SQL Server to SnapCenter</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_limitations_related_to_the_import_feature.html">
+        Limitations related to the import feature
+      </a></li><li class="  active "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_import_archived_backups.html">
+        Import archived backups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_view_the_imported_backups_in_snapcenter_server.html">
+        View the imported backups in SnapCenter Server
+      </a></li></ul></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_install_snapcenter_plug_in_for_vmware_vsphere.html">
+        Install SnapCenter Plug-in for VMware vSphere
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/concept_prepare_for_protecting_sql_databases.html">
+        <div class="na-navbar-padding"> Prepare for data protection</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_prerequisites_for_using_snapcenter_plug_in_for_microsoft_sql_server.html">
+        Prerequisites for using SnapCenter Plug-in for Microsoft SQL Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_how_resources_resource_groups_and_policies_are_used_for_protecting_sql_server.html">
+        How resources, resource groups, and policies are used for protecting SQL Server
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/reference_back_up_sql_server_database_or_instance_or_availability_group.html">
+        <div class="na-navbar-padding"> Back up SQL Server database, or instance, or availability group</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_determine_whether_resources_are_available_for_backup.html">
+        Determine whether resources are available for backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_migrate_resources_to_netapp_storage.html">
+        Migrate resources to NetApp storage system
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_create_backup_policies_for_sql_server_databases.html">
+        Create backup policies for SQL Server databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_create_resource_groups_and_attach_policies_for_sql_server.html">
+        Create resource groups and attach policies for SQL Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_requirements_for_backing_up_sql_resources.html">
+        Requirements for backing up SQL resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_back_up_sql_resources.html">
+        Back up SQL resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_back_up_sql_server_resource_groups.html">
+        Back up SQL Server resource groups
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/task_monitor_sql_resources_backup_operations.html">
+        <div class="na-navbar-padding"> Monitor backup operations</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_monitor_dataprotection_operations_on_sql_resources_in_the_activity_pane.html">
+        Monitor operations in the Activity pane
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_create_a_storage_system_connection_and_a_credential_using_powershell_cmdlets_for_sql.html">
+        Create a storage system connection and a credential using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_back_up_resources_using_powershell_cmdlets_for_sql.html">
+        Back up resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_cancel_the_snapcenter_plug_in_for_sql_server_operations.html">
+        Cancel the SnapCenter Plug-in for Microsoft SQL Server backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_view_sql_server_backups_and_clones_in_the_topology_page.html">
+        View SQL Server backups and clones in the Topology page
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_remove_backups_using_powershell_cmdlets_for_sql.html">
+        Remove backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_clean_up_the_secondary_backup_count_using_powershell_cmdlets_for_sql.html">
+        Clean up the secondary backup count using PowerShell cmdlets
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/reference_restore_sql_server_resources.html">
+        <div class="na-navbar-padding"> Restore SQL Server resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/concept_requirements_for_restoring_a_database.html">
+        Requirements for restoring a database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_restore_sql_server_database_backups.html">
+        Restore SQL Server database backups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_restore_a_sql_server_database_from_secondary_storage.html">
+        Restore an SQL Server database from secondary storage
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_reseed_availability_group_databases.html">
+        Reseed Availability Group databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_restore_and_recover_resources_using_powershell_cmdlets_for_sql.html">
+        Restore and recover resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_monitor_sql_resources_restore_operations.html">
+        Monitor restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_cancel_sql_resources_restore_operations.html">
+        Cancel restore operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scsql/reference_clone_sql_server_database_resources.html">
+        <div class="na-navbar-padding"> Clone SQL Server database resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_clone_from_a_sql_server_database_backup.html">
+        Clone from a SQL Server database backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_clone_backups_using_powershell_cmdlets_for_sql.html">
+        Clone backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_perform_clone_lifecycle_management.html">
+        Perform Clone Lifecycle
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_monitor_sql_database_clone_operations.html">
+        Monitor clone operations in SnapCenter
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_cancel_sql_resource_clone_operations.html">
+        Cancel clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scsql/task_split_a_clone_for_sql.html">
+        Split a clone
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect SAP HANA databases</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/concept_snapcenter_plug_in_for_sap_hana_database_overview.html">
+        <div class="na-navbar-padding"> SnapCenter Plug-in for SAP HANA Database overview</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_what_you_can_do_using_the_snapcenter_plug_in_for_sap_hana_database.html">
+        What you can do using the SnapCenter Plug-in for SAP HANA Database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_snapcenter_plug_in_for_sap_hana_database_features.html">
+        SnapCenter Plug-in for SAP HANA Database features
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_storage_types_supported_by_snapcenter_plug_in_for_sap_hana_database.html">
+        Storage types supported by SnapCenter Plug-in for SAP HANA Database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_minimum_privileges_required_for_sap_hana_and_exchange_plug_in.html">
+        Minimum ONTAP privileges required
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_plugin_for_hana.html">
+        Prepare storage systems for SnapMirror and SnapVault replication
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_define_a_backup_strategy_for_sap_hana_databases.html">
+        <div class="na-navbar-padding"> Define a backup strategy for SAP HANA databases</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_auto_discovery_of_resources_on_linux_host.html">
+        Automatic discovery of resources on Linux host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_type_of_backups_supported.html">
+        Type of backups supported
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_how_snapcenter_plug_in_for_sap_hana_database_uses_consistency_group_snapshot_copies.html">
+        How SnapCenter Plug-in for SAP HANA Database uses consistency group Snapshot copies
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_housekeeping_of_log_backups.html">
+        How SnapCenter manages housekeeping of log and data backups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_considerations_for_determining_backup_schedules_for_sap_hana_database.html">
+        Considerations for determining backup schedules for SAP HANA database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_number_of_backup_jobs_needed_for_sap_hana_databases.html">
+        Number of backup jobs needed for SAP HANA databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_backup_naming_conventions_for_plugin_for_hana.html">
+        Backup naming conventions
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_define_a_restore_and_recovery_strategy_for_sap_hana_resources.html">
+        <div class="na-navbar-padding"> Define a restore and recovery strategy for SAP HANA resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_types_of_restore_strategies_supported_for_manually_added_sap_hana_resources.html">
+        Types of restore strategies supported for manually added SAP HANA resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_types_of_restore_strategies_supported_for_auto_discovered_sap_hana_databases.html">
+        Types of restore strategies supported for automatically discovered SAP HANA databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_types_of_restore_performed_for_auto_discovered_sap_hana_databases.html">
+        Types of restore operations for auto discovered SAP HANA databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_types_of_recovery_operations_supported_for_sap_hana_database.html">
+        Types of recovery operations supported for SAP HANA databases
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_install_snapcenter_plug_in_for_sap_hana_database.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for SAP HANA Database</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/reference_prerequisites_to_adding_hosts_and_installing_snapcenter_plug_in_for_sap_hana_database.html">
+        <div class="na-navbar-padding"> Prerequisites for adding hosts and installing SnapCenter Plug-in for SAP HANA Database</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_host_requirements_to_install_snapcenter_plug_in_package_for_windows_hana.html">
+        Host requirements to install SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_host_requirements_to_install_snapcenter_plug_in_package_for_linux.html">
+        Host requirements for installing the SnapCenter Plug-ins Package for Linux
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_set_up_credentials_for_snapcenter_plug_in_for_sap_hana_database.html">
+        Set up credentials for the SnapCenter Plug-in for SAP HANA Database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_configure_gMSA_on_windows_server_2012_or_later.html">
+        Configure gMSA on Windows Server 2012 or later
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_add_hosts_and_install_plug_in_packages_on_remote_hosts_sap_hana.html">
+        <div class="na-navbar-padding"> Add hosts and install plug-in packages on remote hosts</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_install_snapcenter_plug_in_packages_for_linux_or_windows_on_multiple_remote_hosts_using_cmdlets_sap_hana.html">
+        Install SnapCenter Plug-in Packages for Linux or Windows on multiple remote hosts by using cmdlets
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/concept_install_snapcenter_plug_in_for_sap_hana_database_independently_on_the_linux_host.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for SAP HANA Database independently on the Linux host</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/concept_prepare_to_install_the_snapcenter_plug_in_for_sap_hana_database_on_the_linux_host.html">
+        Prepare to install the SnapCenter Plug-in for SAP HANA Database on the Linux host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_install_the_snapcenter_plug_in_for_sap_hana_database_on_linux_hosts_using_the_command_line_interface.html">
+        Install the SnapCenter Plug-in for SAP HANA Database on Linux hosts by using the command-line interface
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_monitor_the_status_of_installing_plugin_for_sap_hana.html">
+        Monitor SnapCenter plug-in package installation status
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/reference_generate_CA_certificate_CSR_file.html">
+        <div class="na-navbar-padding"> Generate CA Certificate CSR file</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_import_CA_certificates.html">
+        Import CA certificates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_configure_CA_certificate_for_saphana_on_Linux_host.html">
+        Configure the CA Certificate for the SnapCenter SAP HANA Plug-ins service on Linux host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_configure_CA_certificate_for_saphana_on_windows_host.html">
+        Configure the CA Certificate for the SnapCenter SAP HANA Plug-ins service on Windows host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li></ul></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_install_snapcenter_plug_in_for_vmware_vsphere.html">
+        Install SnapCenter Plug-in for VMware vSphere
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/concept_prepare_for_protecting_hana_databases.html">
+        <div class="na-navbar-padding"> Prepare for data protection</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/reference_prerequisites_for_using_snapcenter_plug_in_for_sap_hana_database.html">
+        Prerequisites for using the SnapCenter Plug-in for SAP HANA Database
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_back_up_sap_hana_resources.html">
+        <div class="na-navbar-padding"> Back up SAP HANA resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_configure_hdb_user_store_key_and_hdbsql_os_user_for_the_sap_hana_database.html">
+        Configure HDB User Store Key and HDBSQL OS User for the SAP HANA database
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_discover_the_databases_automatically.html">
+        <div class="na-navbar-padding"> Discover the databases automatically</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_prepare_multitenant_database_containers_for_data_protection.html">
+        Prepare multitenant database containers for data protection
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_add_resources_manually_to_the_plug_in_host.html">
+        Add resources manually to the plug-in host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_create_backup_policies_for_sap_hana_databases.html">
+        Create backup policies for SAP HANA databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_create_resource_groups_and_attach_policies.html">
+        Create resource groups and attach policies
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_back_up_sap_hana_databases.html">
+        Back up SAP HANA databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_back_up_resource_groups_sap_hana.html">
+        Back up resource groups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_create_a_storage_system_connection_and_a_run_as_account_using_powershell_cmdlets_for_sap_hana_database.html">
+        Create a storage system connection and a credential using PowerShell cmdlets for SAP HANA database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_back_up_databases_using_powershell_cmdlets_sap_hana.html">
+        Back up databases using PowerShell cmdlets
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_monitor_hana_databases_backup_operations.html">
+        <div class="na-navbar-padding"> Monitor backup operations</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_monitor_dataprotection_operations_on_hana_databases_in_the_activity_pane.html">
+        Monitor operations in the Activity pane
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_cancel_backup_operations_for_sap_hana.html">
+        Cancel the backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_view_sap_hana_database_backups_and_clones_in_the_topology_page_sap_hana.html">
+        View SAP HANA database backups and clones in the Topology page
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_restore_sap_hana_databases.html">
+        <div class="na-navbar-padding"> Restore SAP HANA databases</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_restore_and_recover_a_manually_added_resource_backup.html">
+        Restore and recover a manually added resource backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_restore_and_recover_an_auto_discovered_database_backup.html">
+        Restore and recover an auto discovered database backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_restore_sap_hana_database_using_powershell_cmdlets.html">
+        Restore SAP HANA database using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_restore_and_recover_resources_using_powershell_cmdlets_hana.html">
+        Restore resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_monitor_hana_databases_restore_operations.html">
+        Monitor restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_cancel_hana_databases_restore_operations.html">
+        Cancel restore operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-hana/task_clone_sap_hana_resource_backups.html">
+        <div class="na-navbar-padding"> Clone SAP HANA resource backups</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_clone_a_sap_hana_database_backup.html">
+        Clone a SAP HANA database backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_clone_sap_hana_database_backups_using_powershell_cmdlets.html">
+        Clone SAP HANA database backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_monitor_hana_database_clone_operations.html">
+        Monitor clone operations in SnapCenter
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_cancel_hana_database_clone_operations.html">
+        Cancel clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-hana/task_delete_or_split_sap_hana_database_clones_after_upgrading_snapcenter.html">
+        Delete or split SAP HANA database clones after upgrading SnapCenter
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect Oracle databases</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/concept_snapcenter_plug_in_for_oracle_database_overview.html">
+        <div class="na-navbar-padding"> Overview of SnapCenter Plug-in for Oracle Database</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_what_you_can_do_with_the_snapcenter_plug_in_for_oracle_database.html">
+        What you can do with the Plug-in for Oracle Database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_snapcenter_plug_in_for_oracle_database_features.html">
+        Features of Plug-in for Oracle
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_storage_types_supported_by_snapcenter_plug_in_for_oracle_database.html">
+        Storage types supported by Plug-in for Oracle Database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_plugin_for_oracle.html">
+        Prepare storage systems for SnapMirror and SnapVault replication for Plug-in for Oracle
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_minimum_ontap_privileges_required_for_oracle_plug_in.html">
+        Minimum ONTAP privileges required for Plug-in for Oracle
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_install_snapcenter_plug_in_for_oracle_databases.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for Oracle Database</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux_or_aix.html">
+        <div class="na-navbar-padding"> Prerequisites for adding hosts and installing Plug-ins Package for Linux or AIX</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_host_requirements_for_installing_the_snapcenter_plug_in_package_for_linux.html">
+        Host requirements for installing Plug-ins Package for Linux
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_host_requirements_for_installing_the_snapcenter_plug_ins_package_for_aix.html">
+        Host requirements for installing Plug-ins Package for AIX
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_set_up_credentials_for_installing_the_plug_in_package_for_linux_or_aix.html">
+        Set up credentials for installing Plug-ins Package for Linux or AIX
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_configure_credentials_for_oracle_database.html">
+        Configure credentials for an Oracle database
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_add_hosts_and_installing_the_snapcenter_plug_ins_package_for_linux_or_aix.html">
+        <div class="na-navbar-padding"> Add hosts and install Plug-ins Package for Linux or AIX</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_install_snapcenter_plug_ins_package_for_linux_or_aix_on_multiple_remote_hosts_using_cmdlets.html">
+        Install Plug-ins Package for Linux or AIX on multiple remote hosts using cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_install_snapcenter_plug_ins_package_for_linux_or_aix_using_command_line_interface.html">
+        Install Plug-ins Package for Linux or AIX using the command-line interface
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_monitor_the_status_of_installing_plugin_for_Oracle.html">
+        Monitor the status of installing Plug-ins Package for Linux or AIX
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_configure_snapcenter_plug_in_loader_service.html">
+        Configure the SnapCenter Plug-in Loader service
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_configure_CA_certificate_with_SPL_on_Linux_host.html">
+        Configure CA certificate with SnapCenter Plug-in Loader service on Linux host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_import_data_from_snapmanager_for_oracle_and_snapmanager_for_sap_to_snapcenter.html">
+        Import data from SnapManager for Oracle and SnapManager for SAP to SnapCenter
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_install_snapcenter_plug_in_for_vmware_vsphere.html">
+        Install SnapCenter Plug-in for VMware vSphere
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/concept_prepare_for_protecting_oracle_databases.html">
+        Prepare for protecting Oracle databases
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_back_up_oracle_databases.html">
+        <div class="na-navbar-padding"> Back up Oracle databases</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_define_a_backup_strategy_for_oracle_databases.html">
+        Define a backup strategy for Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_determine_whether_oracle_databases_are_available_for_backup.html">
+        Determine whether Oracle databases are available for backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_create_backup_policies_for_oracle_database.html">
+        Create backup policies for Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_create_resource_groups_and_attaching_policies_for_oracle_databases.html">
+        Create resource groups and attach policies for Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_requirements_for_backing_up_an_oracle_database.html">
+        Requirements for backing up an Oracle database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_back_up_oracle_resources.html">
+        Back up Oracle resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_back_up_oracle_database_resource_groups.html">
+        Back up Oracle database resource groups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_back_up_oracle_databases_using_unix_commands.html">
+        Back up Oracle databases using UNIX commands
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_monitor_oracle_database_backup_operations.html">
+        <div class="na-navbar-padding"> Monitor Oracle database backup operations</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_monitor_dataprotection_operations_on_oracle_database_in_the_activity_pane.html">
+        Monitor data protection operations on Oracle database in the Activity pane
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_cancel_the_snapcenter_plug_in_for_oracle_database_backup_operations.html">
+        Cancel backup operations of Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_view_oracle_databse_backups_and_clones_in_the_topology_page.html">
+        View Oracle database backups and clones in the Topology page
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_mount_and_unmount_databases_backups.html">
+        Mount and unmount database backups
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_restore_oracle_databases.html">
+        <div class="na-navbar-padding"> Restore and recover Oracle databases</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_define_a_restore_and_recovery_strategy_for_oracle_databases.html">
+        Define a restore and recovery strategy for Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_requirements_for_restoring_an_oracle_database.html">
+        Requirements for restoring an Oracle database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_restore_an_oracle_database.html">
+        Restore Oracle database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_restore_and_recovere_tablespaces_using_point_in_time_recovery.html">
+        Restore and recover tablespaces using point-in-time recovery
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_restore_and_recover_pluggable_database_using_point_in_time_recovery.html">
+        Restore and recover pluggable database using point-in-time recovery
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_restore_and_recover_oracle_databases_using_unix_commands.html">
+        Restore and recover Oracle databases using UNIX commands
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_monitor_oracle_database_restore_operations.html">
+        Monitor Oracle database restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_cancel_oracle_database_restore_operations.html">
+        Cancel Oracle database restore operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sco/task_clone_oracle_database_backups.html">
+        <div class="na-navbar-padding"> Clone Oracle database</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_define_a_clone_strategy_for_oracle_databases.html">
+        Define a clone strategy for Oracle databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/reference_requirements_for_cloning_an_oracle_database.html">
+        Requirements for cloning an Oracle database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_clone_an_oracle_database_backup.html">
+        Clone an Oracle database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_clone_a_pluggable_database.html">
+        Clone a pluggable database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_clone_oracle_database_backups_using_unix_commands.html">
+        Clone Oracle database backups using UNIX commands
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_split_an_oracle_database_clone.html">
+        Split an Oracle Database Clone
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_split_clone_of_a_pluggable_database.html">
+        Split clone of a pluggable database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_monitor_oracle_database_clone_operations.html">
+        Monitor Oracle database clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_cancel_oracle_database_clone_operations.html">
+        Cancel Oracle database clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_refresh_a_clone.html">
+        Refresh a clone
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sco/task_delete_clone_of_a_pluggable_database.html">
+        Delete clone of a pluggable database
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect Windows file systems</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/concept_snapcenter_plug_in_for_microsoft_windows_overview.html">
+        <div class="na-navbar-padding"> SnapCenter Plug-in for Microsoft Windows overview</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_what_you_can_do_with_the_snapcenter_plug_in_for_microsoft_windows.html">
+        What you can do with the SnapCenter Plug-in for Microsoft Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/concept_snapcenter_plug_in_for_windows_features.html">
+        SnapCenter Plug-in for Windows features
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/concept_how_snapcenter_backs_up_windows_file_systems.html">
+        How SnapCenter backs up Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_storage_types_supported_by_snapcenter_plug_ins_for_microsoft_windows.html">
+        Storage types supported by SnapCenter Plug-ins for Microsoft Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_minimum_ontap_privileges_required_for_windows_plug_in.html">
+        Minimum ONTAP privileges required for Windows plug-in
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_prepare_storage_system_for_snapmirror_and_snapvault.html">
+        Prepare storage systems for SnapMirror and SnapVault replication
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_define_a_backup_strategy_for_windows_file_systems.html">
+        Define a backup strategy for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_sources_and_destinations_of_clones_for_windows_file_systems.html">
+        Sources and destinations of clones for Windows file systems
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/concept_install_snapcenter_plug_in_for_microsoft_windows.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for Microsoft Windows</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/reference_installation_requirements_for_snapcenter_plug_in_for_microsoft_windows.html">
+        <div class="na-navbar-padding"> Installation requirements for SnapCenter Plug-in for Microsoft Windows</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/reference_host_requirements_to_install_snapcenter_plug_in_package_for_windows.html">
+        Host requirements to install SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_set_up_your_credentials_for_the_plug_in_for_windows.html">
+        Set up your credentials for the Plug-in for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_configure_gMSA_on_windows_server_2012_or_later.html">
+        Configure gMSA on Windows Server 2012 or later
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/task_add_hosts_and_install_snapcenter_plug_in_for_microsoft_windows.html">
+        <div class="na-navbar-padding"> Add hosts and install SnapCenter Plug-in for Microsoft Windows</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_install_on_multiple_remote_hosts_using_powershell_cmdlets.html">
+        Install SnapCenter Plug-in for Microsoft Windows on multiple remote hosts using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_install_the_snapcenter_plug_in_for_windows_silently_from_the_command_line.html">
+        Install the SnapCenter Plug-in for Microsoft Windows silently from the command line
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_monitor_snapcenter_plug_in_package_installation_status.html">
+        Monitor SnapCenter plug-in package installation status
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/reference_generate_CA_certificate_CSR_file.html">
+        <div class="na-navbar-padding"> Generate CA Certificate CSR file</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_import_CA_certificates.html">
+        Import CA certificates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li></ul></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_install_snapcenter_plug_in_for_vmware_vsphere.html">
+        Install SnapCenter Plug-in for VMware vSphere
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/reference_back_up_windows_file_systems.html">
+        <div class="na-navbar-padding"> Back up Windows file systems</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_determine_resource_availability_for_windows_file_systems.html">
+        Determine resource availability for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_create_backup_policies_for_windows_file_systems.html">
+        Create backup policies for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_create_resource_groups_for_windows_file_systems.html">
+        Create resource groups for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_back_up_a_single_resource_on_demand_for_windows_file_systems.html">
+        Back up a single resource on demand for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_back_up_resource_groups_for_windows_file_systems.html">
+        Back up resource groups for Windows file systems
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_create_a_storage_system_connection_and_a_credential_using_powershell_cmdlets_for_windows.html">
+        Create a storage system connection and a credential using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_back_up_resources_using_powershell_cmdlets_for_windows.html">
+        Back up resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_monitor_backup_operations.html">
+        Monitor backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_cancel_backup_operations_for_windows_file_system.html">
+        Cancel the backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_view_related_backups_and_clones_in_the_topology_page.html">
+        View related backups and clones in the Topology page
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_remove_backups_using_powershell_cmdlets_for_windows.html">
+        Remove backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_clean_up_the_secondary_backup_count_using_powershell_cmdlets_for_windows.html">
+        Clean up the secondary backup count using PowerShell cmdlets
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/task_restore_windows_file_system_backups.html">
+        <div class="na-navbar-padding"> Restore Windows file system backups</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_restore_and_recover_resources_using_powershell_cmdlets_for_windows.html">
+        Restore and recover resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_monitor_restore_operations.html">
+        Monitor restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_cancel_restore_operations.html">
+        Cancel restore operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scw/task_clone_from_a_windows_file_system_backup.html">
+        <div class="na-navbar-padding"> Clone from a Windows file system backup</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_clone_backups_using_powershell_cmdlets_for_windows.html">
+        Clone backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_monitor_clone_operations.html">
+        Monitor clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_cancel_clone_operations.html">
+        Cancel clone operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scw/task_split_a_clone_for_windows.html">
+        Split a clone
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect Microsoft Exchange Server databases</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/concept_snapcenter_plug_in_for_exchange_server_overview.html">
+        <div class="na-navbar-padding"> SnapCenter Plug-in for Microsoft Exchange Server overview</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/concept_what_you_can_do_with_snapcenter_plug_in_for_microsoft_exchange_server.html">
+        What you can do with SnapCenter Plug-in for Microsoft Exchange Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_storage_types_supported_by_snapcenter_plug_in_for_microsoft_windows_and_for_microsoft_exchange_server.html">
+        Storage types supported by SnapCenter Plug-in for Microsoft Windows and for Microsoft Exchange Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/concept_minimum_privileges_required_exchange_plug_in.html">
+        Minimum ONTAP privileges required
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_prepare_storage_system_for_snapmirror_and_snapvault.html">
+        Prepare storage systems for SnapMirror and SnapVault replication
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_define_a_backup_strategy_for_exchange_server_resources.html">
+        Define a backup strategy for Exchange Server resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_define_a_restore_strategy_for_exchange_databases.html">
+        Define a restore strategy for Exchange databases
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/concept_install_snapcenter_plug_in_for_microsoft_exchange_server.html">
+        <div class="na-navbar-padding"> Install SnapCenter Plug-in for Microsoft Exchange Server</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/reference_prerequisites_to_add_hosts_and_install_snapcenter_plug_in_for_microsoft_exchange_server.html">
+        <div class="na-navbar-padding"> Prerequisites to add hosts and install SnapCenter Plug-in for Microsoft Exchange Server</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_host_requirements_to_install_snapcenter_plug_in_package_for_windows.html">
+        Host requirements to install SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_exchange_server_cluster_node_privileges_required.html">
+        Exchange Server privileges required
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_set_up_credentials_for_the_snapcenter_plug_in_for_windows_sce.html">
+        Set up credentials for SnapCenter Plug-in for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_configure_gMSA_on_windows_server_2012_or_later.html">
+        Configure gMSA on Windows Server 2012 or later
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/task_add_hosts_and_install_plug_in_for_exchange.html">
+        <div class="na-navbar-padding"> Add hosts and install Plug-in for Exchange</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_install_plug_in_for_exchange_from_the_snapcenter_server_host_using_powershell_cmdlets.html">
+        Install Plug-in for Exchange from the SnapCenter Server host using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_install_the_snapcenter_plug_in_for_exchange_silently_from_the_command_line.html">
+        Install the SnapCenter Plug-in for Exchange silently from the command line
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_monitor_snapcenter_plug_in_package_installation_status.html">
+        Monitor SnapCenter plug-in package installation status
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/reference_generate_CA_certificate_CSR_file.html">
+        <div class="na-navbar-padding"> Generate CA Certificate CSR file</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_import_CA_certificates.html">
+        Import CA certificates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_configure_snapmanager_7_x_for_exchange_and_snapcenter_plug_in_for_exchange_to_coexist.html">
+        Configure SnapManager 7.x for Exchange and SnapCenter to coexist
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_install_snapcenter_plug_in_for_vmware_vsphere.html">
+        Install SnapCenter Plug-in for VMware vSphere
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/concept_prepare_for_data_protection.html">
+        Prepare for data protection
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/concept_back_up_exchange_resources.html">
+        <div class="na-navbar-padding"> Back up Exchange resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_exchange_database_and_backup_verification.html">
+        Exchange database and backup verification
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_determine_whether_exchange_resources_are_available_for_backup_sce.html">
+        Determine whether Exchange resources are available for backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_create_backup_policies_for_exchange_server_databases.html">
+        Create backup policies for Exchange Server databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_create_resource_groups_and_attach_policies_for_exchange_servers.html">
+        Create resource groups and attach policies for Exchange Servers
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_back_up_exchange_databases.html">
+        Back up Exchange databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_back_up_exchange_resources_groups.html">
+        Back up Exchange resources groups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_create_a_storage_system_connection_and_a_credential_using_powershell_cmdlets_for_exchange_database.html">
+        Create a storage system connection and a credential using PowerShell cmdlets for Exchange Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_back_up_exchange_resources_using_powershell_cmdlets.html">
+        Back up Exchange resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_monitor_backup_operations.html">
+        Monitor backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_cancel_backup_operations_for_exchange_database.html">
+        Cancel backup operations for Exchange database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_remove_exchange_backups_using_powershell_cmdlets.html">
+        Remove Exchange backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_view_exchange_backups_in_the_topology_page.html">
+        View Exchange backups on the Topology page
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-sce/reference_restore_exchange_resources.html">
+        <div class="na-navbar-padding"> Restore Exchange resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/concept_requirements_for_restoring_an_exchange_database.html">
+        Requirements for restoring an Exchange database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_restore_exchange_databases.html">
+        Restore Exchange databases
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/reference_granular_recovery_of_mails_and_mailbox.html">
+        Granular recovery of mails and mailbox
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_restore_an_exchange_server_database_from_secondary_storage.html">
+        Restore an Exchange Server database from secondary storage
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_restore_exchange_resources_using_powershell_cmdlets.html">
+        Restore Exchange resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_reseed_a_passive_exchange_node_replica.html">
+        Reseed a passive Exchange node replica
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_reseed_a_replica_using_powershell_cmdlets_for_exchange_database.html">
+        Reseed a replica using PowerShell cmdlets for Exchange database
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_monitor_restore_operations.html">
+        Monitor restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-sce/task_cancel_restore_operations.html">
+        Cancel restore operations
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Protect Custom applications</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/concept_snapcenter_custom_plug_ins_overview.html">
+        <div class="na-navbar-padding"> SnapCenter Custom Plug-ins overview</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/concept_what_you_can_do_with_the_snapcenter_custom_plug_ins.html">
+        What you can do with the SnapCenter Custom Plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/concept_snapcenter_custom_plug_ins_features.html">
+        SnapCenter Custom Plug-ins features
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_storage_types_supported_by_snapcenter_custom_plug_in.html">
+        Storage types supported by SnapCenter Custom Plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_minimum_ontap_privileges_required_for_custom_plug_in.html">
+        Minimum ONTAP privileges required for custom plug-in
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_plugin_for_scc.html">
+        Prepare storage systems for SnapMirror and SnapVault replication
+      </a></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_define_a_backup_strategy.html">
+        <div class="na-navbar-padding"> Define a backup strategy</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_backup_schedules_of_custom_plug_in_resources.html">
+        Backup schedules of custom plug-in resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/concept_number_of_backup_jobs_needed.html">
+        Number of backup jobs needed
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_types_of_restore_strategies_supported_for_manually_added_sap_hana_resources.html">
+        Types of restore strategies supported for manually added SAP HANA resources
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/concept_develop_a_plug_in_for_your_application.html">
+        <div class="na-navbar-padding"> Develop a plug-in for your application</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_perl.html">
+        PERL-based development
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_native.html">
+        Native style
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_java.html">
+        Java style
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_custom_plugin_in_snapcenter.html">
+        Custom plug-in in SnapCenter
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_install_snapcenter_custom_plug_in.html">
+        <div class="na-navbar-padding"> Install SnapCenter Custom Plug-ins</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/reference_prerequisites_to_adding_hosts_and_installing_snapcenter_custom_plug_ins.html">
+        <div class="na-navbar-padding"> Prerequisites for adding hosts and installing SnapCenter Custom Plug-ins</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_host_requirements_to_install_snapcenter_plug_in_package_for_windows_scc.html">
+        Host requirements to install SnapCenter Plug-ins Package for Windows
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_host_requirements_for_installing_the_snapcenter_plug_in_package_for_linux_scc.html">
+        Host requirements for installing the SnapCenter Plug-ins Package for Linux
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_set_up_credentials_for_snapcenter_custom_plug_in.html">
+        Set up credentials for SnapCenter Custom Plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_configure_gMSA_on_windows_server_2012_or_later.html">
+        Configure gMSA on Windows Server 2012 or later
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_add_hosts_and_install_plug_in_packages_on_remote_hosts_scc.html">
+        <div class="na-navbar-padding"> Add hosts and install plug-in packages on remote hosts</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_install_snapcenter_plug_in_packages_for_linux_or_windows_on_multiple_remote_hosts_using_cmdlets_scc.html">
+        Install SnapCenter Plug-in Packages for Linux or Windows on multiple remote hosts by using cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_monitor_the_status_of_installing_plugin_for_scc.html">
+        Monitor SnapCenter plug-in package installation status
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/reference_generate_CA_certificate_CSR_file.html">
+        <div class="na-navbar-padding"> Generate CA Certificate CSR file</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_import_CA_certificates.html">
+        Import CA certificates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_get_the_CA_certificate_thumbprint.html">
+        Get the CA certificate thumbprint
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_configure_CA_certificate_with_Windows_host_plug-in_services.html">
+        Configure CA certificate with Windows host plug-in services
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_configure_CA_certificate_for_SCC_on_Linux_host.html">
+        Configure the CA Certificate for the SnapCenter Custom Plug-ins service on Linux host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_configure_CA_certificate_for_SCC_on_windows_host.html">
+        Configure the CA Certificate for the SnapCenter Custom Plug-ins service on Windows host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_enable_ca_certificates_for_plug-ins.html">
+        Enable CA Certificates for plug-ins
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/concept_prepare_for_protecting_scc_resources.html">
+        <div class="na-navbar-padding"> Prepare for data protection</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/reference_prerequisites_for_using_snapcenter_custom_plug_ins.html">
+        Prerequisites for using the SnapCenter Custom Plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/concept_how_resources_resource_groups_and_policies_are_used_for_protecting_custom_plug_in_resources.html">
+        How resources, resource groups, and policies are used for protecting custom plug-in resources
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_back_up_custom_plug_in_resources.html">
+        <div class="na-navbar-padding"> Back up custom plug-in resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_add_resources_to_snapcenter_custom_plug_ins.html">
+        Add resources to SnapCenter Custom Plug-ins
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_create_policies_for_custom_plug_in_resources.html">
+        Create policies for custom plug-in resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_create_resource_groups_and_attach_policies.html">
+        Create resource groups and attach policies
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_back_up_individual_custom_plug_in_resources.html">
+        Back up individual custom plug-in resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_back_up_resource_groups_of_custom_plug_in_resources.html">
+        Back up resource groups of custom plug-in resources
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_create_a_storage_system_connection_and_a_credential_using_powershell_cmdlets_scc.html">
+        Create a storage system connection and a credential using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_back_up_resources_using_powershell_cmdlets.html">
+        Back up resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_monitor_scc_resources_backup_operations.html">
+        Monitor backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_cancel_backup_operations_for_scc.html">
+        Cancel the backup operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_view_custom_plug_in_resource_backups_and_clones_in_the_topology_page.html">
+        View custom plug-in resource related backups and clones in the Topology page
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_restore_custom_plug_in_resources.html">
+        <div class="na-navbar-padding"> Restore custom plug-in resources</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_restore_a_resource_backup.html">
+        Restore a resource backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_restore_and_recover_resources_using_powershell_cmdlets_scc.html">
+        Restore resources using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_monitor_scc_resources_restore_operations.html">
+        Monitor restore operations
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_cancel_scc_resources_restore_operations.html">
+        Cancel restore operations
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/protect-scc/task_clone_custom_plug_in_resource_backups.html">
+        <div class="na-navbar-padding"> Clone custom plug-in resource backups</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_clone_from_a_backup.html">
+        Clone from a backup
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_clone_backups_using_powershell_cmdlets.html">
+        Clone backups using PowerShell cmdlets
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_monitor_scc_resource_clone_operations.html">
+        Monitor clone operations in SnapCenter
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/protect-scc/task_cancel_scc_resource_clone_operations.html">
+        Cancel clone operations
+      </a></li></ul></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Manage SnapCenter Server and plug-ins</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/admin/concept_overview_of_dashboard.html">
+        <div class="na-navbar-padding"> Overview of dashboard</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_how_to_view_information_on_the_dashboard.html">
+        How to view information on the dashboard
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_request_status_reports_of_the_jobs_from_the_dashboard.html">
+        Request status reports of the jobs from the dashboard
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_request_reports_of_the_protection_status_from_the_dashboard.html">
+        Request reports of the protection status from the dashboard
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_manage_rbac.html">
+        Manage RBAC
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_hosts.html">
+        Manage hosts
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_what_operations_can_be_performed_from_the_resource_page.html">
+        Operations supported from the Resources page
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_policies.html">
+        Manage policies
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_manage_resource_groups.html">
+        Manage resource groups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_backups.html">
+        Manage backups
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/task_delete_clones.html">
+        Delete clones
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_monitor_jobs_schedules_events_and_logs.html">
+        Monitor jobs, schedules, events, and logs
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_overview_of_snapcenter_reports.html">
+        Overview of SnapCenter reporting capabilities
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_the_snapcenter_server_repository.html">
+        Manage the SnapCenter Server repository
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_resources_of_untrusted_domains.html">
+        Manage resources of untrusted domains
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_the_storage_system.html">
+        Manage the storage system
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/admin/concept_manage_ems_data_collection.html">
+        Manage EMS data collection
+      </a></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Upgrade SnapCenter Server and plug-ins</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/upgrade/upgrade_workflow.html">
+        Upgrade Workflow
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/upgrade/task_configure_snapcenter_to_check_for_available_updates.html">
+        ConfigureSnapCenter to check for available updates
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/upgrade/task_upgrade_snapcenter.html">
+        Upgrade the SnapCenter Server
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/upgrade/task_upgrade_your_plug_in_packages.html">
+        Upgrade your plug-in packages
+      </a></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Uninstall SnapCenter Server and plug-ins</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/uninstall/concept_uninstall_snapcenter_plug_ins_and_plug_in_packages.html">
+        <div class="na-navbar-padding"> Uninstall SnapCenter plug-ins and plug-in packages</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/reference_prerequisites_for_removing_a_host.html">
+        Prerequisites for removing a host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_remove_a_host.html">
+        Remove a host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_uninstall_plug_ins_from_a_host_using_the_snapcenter_gui.html">
+        Uninstall plug-ins using the SnapCenter GUI
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_uninstalling_windows_plug_ins_using_the_command_line_interface_on_the_snapcenter_server_host.html">
+        Uninstall Windows plug-ins using the PowerShell cmdlet
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_uninstall_plug_ins_locally_on_a_host.html">
+        Uninstall plug-ins locally on a host
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_uninstall_snapcenter_plug_ins_package_for_linux_or_aix_using_command_line_interface.html">
+        Uninstall plug-ins package for Linux or AIX using CLI
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/uninstall/task_uninstalling_the_snapcenter_server.html">
+        Uninstall the SnapCenter Server
+      </a></li></ul></li><li class="subfolders "><a href="#">
+        <div class="na-navbar-padding"> Automation using REST APIs</div>
+      </a>
+      <ul><li class="subfolders "><a href="/us-en/snapcenter/sc-automation/overview_rest_apis.html">
+        <div class="na-navbar-padding"> Overview of REST APIs</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/concept_how_to_access_snapcenter_rest_api_natively.html">
+        How to access SnapCenter REST API natively
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/concept_rest_web_services_foundation.html">
+        REST web services foundation
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/concept_basic_operational_characterstics.html">
+        Basic operational characteristics
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/concept_input_variables_controlling_an_api_request.html">
+        Input variables controlling an API request
+      </a></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/concept_interpreting_an_api_response.html">
+        Interpretation of an API response
+      </a></li></ul></li><li class="subfolders "><a href="/us-en/snapcenter/sc-automation/reference_supported_rest_apis.html">
+        <div class="na-navbar-padding"> Supported REST APIs</div>
+      </a>
+      <ul><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/task_how to_access_rest_apis_using_the_swagger_api_web_page.html">
+        How to access REST APIs using the Swagger API web page
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/sc-automation/task_get_started_with_the_rest_api.html">
+        Get started with the REST API
+      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/us-en/snapcenter/reference_legal_notices.html">
+        Legal notices
+      </a></li></ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+  </div>
+  
+
+  <div class="ie-content-pane n-doc__component-detail-content n-doc__component-detail-content--show-code">
+    <!-- Begin of page container -->
+    <article class="page-content">
+      
+
+
+
+<div class="n-doc__component-detail-heading-wrap">
+  <h1 class="n-doc__component-detail-heading">Import archived backups</h1>
+</div>
+
+
+<p class="page-details">
+  
+    
+    <time datetime="2021-06-17 08:58:24 +0000">06/17/2021</time>
+    
+  
+
+<span>Contributors
+  <a target="_blank" href="https://github.com/netapp-nsriram">
+    <img  class="avatar avatar-small"
+          alt="netapp-nsriram"
+          width="20" height="20"
+          src="https://avatars.githubusercontent.com/u/64957347?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
+  <a target="_blank" href="https://github.com/netapp-asubhas">
+    <img  class="avatar avatar-small"
+          alt="netapp-asubhas"
+          width="20" height="20"
+          src="https://avatars.githubusercontent.com/u/79509513?v=4"
+          style="border-radius: 50%;"/>
+  </a>
+  
+</span>
+
+
+  <span>
+    <a target="_blank" href="/us-en/snapcenter/pdfs/pages/protect-scsql/task_import_archived_backups.pdf" role="button">
+      <img src="/us-en/snapcenter/images/pdf.png" width="20" height="20"/>Download PDF of this page</a>
+  </span>
+
+
+</p>
+
+
+<div class="paragraph lead">
+<p>You can import only those backups that were archived using SnapVault technology from SnapManager for Microsoft SQL Server to SnapCenter from the command-line interface.</p>
+</div>
+<div class="paragraph">
+<p><strong>What you will need</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Both the SnapCenter Plug-in for Microsoft SQL Server and SnapManager for Microsoft SQL Server 7.x must be installed on the same host.</p>
+</li>
+<li>
+<p>For cluster support, both the plug-in and 7.x product must have been installed on each node in the cluster.</p>
+</li>
+<li>
+<p>You must have added the host or cluster to SnapCenter and discovered the resources available for backup on the host or cluster.</p>
+</li>
+<li>
+<p>You must have backed up the SnapManager for Microsoft SQL Server SnapInfo folder.</p>
+<div class="paragraph">
+<p>If the import operation fails, you can retrieve the backup metadata from the SnapInfo directory.</p>
+</div>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p><strong>Best Practice:</strong> It is a best practice to configure the log backup folder for the SnapCenter Plug-in for Microsoft SQL Server.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For information on SnapCenter installation and configuration tasks, see the SnapCenter installation information. For information on SnapManager for Microsoft SQL Server installation and configuration tasks, see the SnapManager installation information.</p>
+</div>
+<div class="paragraph">
+<p>After the archived backups have been imported to SnapCenter from SnapManager for Microsoft SQL Server, you can perform restore and clone operations on these backups from SnapCenter. Simultaneously, you can also continue to perform backup, restore, and clone operations using SnapManager for Microsoft SQL Server.</p>
+</div>
+<div class="paragraph">
+<p><strong>Steps</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Perform the following steps to create schedules similar to SnapManager for Microsoft SQL Server schedules manually in SnapCenter:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Retrieve the schedule information from SnapManager for Microsoft SQL Server by using the <code>Get-SmSchedule</code> cmdlet.</p>
+</li>
+<li>
+<p>Save the schedule information.</p>
+<div class="paragraph">
+<p>You can use this schedule information while creating policies in SnapCenter.</p>
+</div>
+</li>
+<li>
+<p>Disable SnapManager for Microsoft SQL Server schedules by using the <code>Get-SmSchedule -Hostname &lt;hostname&gt; -PluginCode SMSQL -DisableCurrentGenSchedule</code> cmdlet.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Import archived backups by using the <code>Invoke-SmBackupMigration</code> cmdlet.</p>
+</li>
+</ol>
+</div>
+
+    </article>
+    <!-- Page Container -->
+  </div>
+
+  
+  <!-- Start Page Toolbar -->
+  <div class="page-nav-toolbar">
+    <div class="page-nav-contribute"  >
+      <div class="page-nav-contribute-title">CONTRIBUTE</div>
+      <a target="_blank" href="https://github.com/NetAppDocs/snapcenter/blob/main/protect-scsql/task_import_archived_backups.adoc" class="btn btn-default githubEditButton" role="button"><img src="/us-en/snapcenter/images/github.png" class="github-icon" />Edit on GitHub</a>
+      <a target="_blank" href="https://github.com/NetAppDocs/snapcenter/issues/new?body=Page%3A%20[Import archived backups](https://docs.netapp.com/us-en/snapcenter/protect-scsql/task_import_archived_backups.html)" class="btn btn-default githubEditButton" role="button"><img src="/us-en/snapcenter/images/github.png" class="github-icon" />Request doc changes</a>
+      <a target="_blank" href="https://docs.netapp.com/us-en/contribute/" class="page-nav-contribute-link"  >Contributor's Guide</a>
+    </div>
+    <div class="page-nav-container">
+      <nav class="page-nav-fixed">
+        <div class="page-nav-title">ON THIS PAGE</div>
+        <div class="page-nav-links">
+          <ul class="page-nav-inner" id="page-menu"></ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  
+  <div style="clear: both"></div><!-- Main needs to have height -->
+</div>
+
+        </main>
+
+        <footer class="n-footer">
+  <div class="n-footer__bottom">
+    <div class="n-container">
+      <div class="n-footer__bottom-left">
+
+        <div class="n-footer__copyright">
+          <ul class="n-footer__copyright-list">
+            <li class="n-footer__copyright-link">
+            <a href="https://www.netapp.com/us/legal/copyright.aspx">© 2021 NetApp, Inc.</a>
+            </li>
+
+</ul>
+</div>
+<div class="n-footer__social-links">
+<ul class="n-footer__social-link-list">
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-blog" href="https://blog.netapp.com" target="_blank" title="blog" alt="blog">
+<span class="n-footer__social-link-text">blog</span>
+<svg class="n-icon-blog n-footer__social-link-icon" aria-labelledby="title">
+  <title>blog@</title>
+  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#blog"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-community" href="https://community.netapp.com/" target="_blank" title="community" alt="community">
+<span class="n-footer__social-link-text">community</span>
+<svg class="n-icon-community n-footer__social-link-icon" aria-labelledby="title">
+<title>community@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#comments"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-twitter" href="https://twitter.com/netapp" target="_blank" title="twitter" alt="twitter">
+<span class="n-footer__social-link-text">twitter</span>
+<svg class="n-icon-twitter n-footer__social-link-icon" aria-labelledby="title">
+<title>twitter@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#twitter"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-facebook" href="https://www.facebook.com/NetApp" target="_blank" title="facebook" alt="facebook">
+<span class="n-footer__social-link-text">facebook</span>
+<svg class="n-icon-facebook n-footer__social-link-icon" aria-labelledby="title">
+<title>facebook@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#facebook"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-linkedin" href="https://www.linkedin.com/company/netapp" target="_blank" title="linkedin" alt="linkedin">
+<span class="n-footer__social-link-text">linkedin</span>
+<svg class="n-icon-linkedin n-footer__social-link-icon" aria-labelledby="title">
+<title>linkedin@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#linkedin"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-youtube" href="https://www.youtube.com/user/NetAppTV" target="_blank" title="youtube" alt="youtube">
+<span class="n-footer__social-link-text">youtube</span>
+<svg class="n-icon-youtube n-footer__social-link-icon" aria-labelledby="title">
+<title>youtube@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#youtube"></use>
+</svg>
+
+</a>
+</li>
+<li class="n-footer__social-link-list-item">
+<a class="n-footer__social-link" data-ntap-social="follow-slideshare" href="https://www.slideshare.net/NetApp" target="_blank" title="slideshare" alt="slideshare">
+<span class="n-footer__social-link-text">slideshare</span>
+<svg class="n-icon-slideshare n-footer__social-link-icon" aria-labelledby="title">
+<title>slideshare@</title>
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/us-en/snapcenter/common/svg/sprite.svg#slideshare"></use>
+</svg>
+
+</a>
+</li>
+</ul>
+</div>
+
+</div>
+<div class="n-footer__bottom-right">
+  <p class="n-footer__fine-print">Have feedback for our website?<a target="_self" href="javascript:netapp_mailto()" class="n-footer__copyright">Let us know</a>
+  <a href="https://docs.netapp.com/us-en/announcements/" class="n-footer__copyright">Announcements</a>
+  </p>
+</div>
+</div>
+</div>
+</footer>
+
+      </div>
+
+      <!-- Elasticsearch JS -->
+      <script type="text/javascript" src='/us-en/snapcenter/js/bundle.js'></script>
+
+      <!-- Syntax Highlighting -->
+      <script type="text/javascript" src='/us-en/snapcenter/js/prism.js'></script>
+      <script type="text/javascript" src='/us-en/snapcenter/js/prism-curl.js'></script>
+    </div>
+    <script>
+      document.body.offsetWidth=1903;
+      cookieLaw = {}
+      cookieLaw.euCountry = "US";
+      cookieLaw.invoke = function(){return false;}
+    </script>
+    <script src='/us-en/snapcenter/js/www-ntap.js'></script>
+  </body>
+
+  
+</html>
